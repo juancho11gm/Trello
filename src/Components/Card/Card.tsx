@@ -1,10 +1,11 @@
-import React from 'react';
-import { CardContainer } from '../../Utils/Styles';
+import React, { ReactElement } from 'react'
+import { CardContainer } from '../../Utils/Styles'
 
 interface CardProps {
-    text: string
+  text: string
+  innerRef: (element?: HTMLElement | null) => any
 }
 
-export const Card = ({ text }: CardProps) => {
-    return <CardContainer>{text}</CardContainer>;  
-};
+export const Card = ({ text, innerRef, ...dragProps }: CardProps): ReactElement => {
+  return <CardContainer ref={innerRef} {...dragProps}>{text}</CardContainer>
+}

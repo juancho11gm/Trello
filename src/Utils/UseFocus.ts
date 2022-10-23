@@ -1,12 +1,11 @@
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react'
 
-export const useFocus = () => {
-    const ref = useRef<HTMLInputElement>(null);
+export const useFocus = (): React.RefObject<HTMLInputElement> => {
+  const ref = useRef<HTMLInputElement>(null)
 
-    useEffect(() => {
-        console.log('Use effect');
-        ref.current?.focus();
-    });
+  useEffect(() => {
+    ref.current?.focus()
+  })
 
-    return ref;
+  return ref
 }

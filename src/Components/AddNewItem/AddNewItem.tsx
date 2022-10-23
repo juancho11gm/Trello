@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { NewItemForm } from '../NewItemForm';
-import { AddItemButton } from '../../Utils/Styles';
+import React, { ReactElement, useState } from 'react'
+import { NewItemForm } from '../NewItemForm'
+import { AddItemButton } from '../../Utils/Styles'
 
 interface AddNewItemProps {
-  onAdd(text: string): void,
-  toggleButtonText: string,
+  onAdd: (text: string) => void
+  toggleButtonText: string
   dark?: boolean
 }
 
-const AddNewItem = (props: AddNewItemProps) => {
-  const [showForm, setShowForm] = useState(false);
-  const { onAdd, toggleButtonText, dark } = props;
+const AddNewItem = (props: AddNewItemProps): ReactElement => {
+  const [showForm, setShowForm] = useState(false)
+  const { onAdd, toggleButtonText, dark } = props
 
-  if(showForm) {
+  if (showForm) {
     return (
-      <NewItemForm 
+      <NewItemForm
         onAdd={text => {
           onAdd(text)
           setShowForm(false)
         }}
       />
-    );
+    )
   }
 
   return (
@@ -28,6 +28,6 @@ const AddNewItem = (props: AddNewItemProps) => {
       {toggleButtonText}
     </AddItemButton>
   )
-};
+}
 
-export { AddNewItem };
+export { AddNewItem }
