@@ -1,1 +1,1 @@
-export * from './AppStateContext'
+export * from './AppStateContext';

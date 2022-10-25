@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+# Trello APP
+
+[Trello](clone) created with:
+
+- React.
+- TypeScript.
+- Styled Components.
+- React Beautiful Dnd.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
