@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { AddNewItem } from '../AddNewItem';
 import { CardsContainer, ColumnContainer, ColumnTitle } from '../../Utils/Styles';
-import { AppStateContextProps, useAppState } from '../AppStateContext';
+import { useAppState } from '../AppStateContext';
 import { Card } from '../Card';
 
 interface ColumnProps {
@@ -19,7 +19,7 @@ export const Column = ({
   innerRef,
   ...dragProps
 }: React.PropsWithChildren<ColumnProps>): ReactElement => {
-  const { state, dispatch } = useAppState() as AppStateContextProps;
+  const { state, dispatch } = useAppState();
 
   return (
     <DragDropContext

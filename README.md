@@ -4,7 +4,7 @@
 
 - React.
 - TypeScript.
-- Styled Components.
+- Styled Components 💅🏻.
 - React Beautiful Dnd.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

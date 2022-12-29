@@ -55,7 +55,7 @@ export interface AppStateContextProps {
   dispatch: React.Dispatch<Action>;
 }
 
-const appData: AppState = {
+const initialState: AppState = {
   list: [
     {
       id: '0',
@@ -75,14 +75,18 @@ const appData: AppState = {
   ],
 };
 
-export const useAppState = (): AppStateContextProps | null => {
-  return useContext(AppStateContext);
+export const useAppState = (): AppStateContextProps => {
+  const contextValue = useContext(AppStateContext);
+  if (contextValue === null) {
+    throw Error('Context has not been Provided!');
+  }
+  return contextValue;
 };
 
 const AppStateContext = createContext<AppStateContextProps | null>(null);
 
 export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>): ReactElement => {
-  const [state, dispatch] = useReducer(appStateReducer, appData);
+  const [state, dispatch] = useReducer(appStateReducer, initialState);
   return (
     <AppStateContext.Provider value={{ state, dispatch }}>{children}</AppStateContext.Provider>
   );

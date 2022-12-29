@@ -1,16 +1,23 @@
 import styled from 'styled-components';
 
+export const AppTitle = styled.h1`
+  text-align: center;
+`;
+
 export const AppContainer = styled.div`
   background-color: #3179ba;
   display: flex;
+  gap: 20px;
   flex-direction: row;
   height: 100%;
   padding: 20px;
   width: 100%;
+  overflow: scroll;
 `;
 
 export const ColumnsContainer = styled.ul`
   display: flex;
+  gap: 20px;
   flex-direction: row;
   list-style-type: none;
   padding: 0;
@@ -21,21 +28,20 @@ export const ColumnsContainer = styled.ul`
 export const ColumnContainer = styled.li`
   background-color: #ebecf0;
   min-height: 40px;
-  margin-right: 20px;
   border-radius: 3px;
   padding: 8px 8px;
   width: 100%;
 `;
 
 export const ColumnTitle = styled.div`
-  padding: 6px 16px 12px;
   font-weight: bold;
+  text-align: center;
+  margin: 8px 0;
 `;
 
 export const CardsContainer = styled.ul`
   margin: 0;
   padding: 0;
-  padding: 10px 12px;
   list-style-type: none;
 `;
 
@@ -44,8 +50,7 @@ export const CardContainer = styled.li`
   cursor: pointer;
   margin: 0;
   margin-bottom: 0.5rem;
-  padding: 10px 0;
-  max-width: 300px;
+  padding: 10px;
   border-radius: 3px;
   box-shadow: #091e4240 0px 1px 0px 0px;
 `;
@@ -56,21 +61,21 @@ export const AddItemButton = styled.button<AddItemButtonProps>`
   border: none;
   color: ${(props) => (props.dark ?? false ? '#000' : '#fff')};
   cursor: pointer;
-  max-width: 300px;
   text-align: left;
   transition: background 85ms ease-in;
   width: 100%;
   &:hover {
     background-color: #ffffff52;
   }
+  flex-shrink: 4;
+  padding: 1rem;
 `;
-export const NewItemFormContainer = styled.div`
+export const NewItemFormContainer = styled.form`
   max-width: 300px;
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: flex-start;
-  padding: 0 12px;
 `;
 
 export const NewItemButton = styled.button`
@@ -81,6 +86,7 @@ export const NewItemButton = styled.button`
   color: #fff;
   padding: 6px 12px;
   text-align: center;
+  cursor: pointer;
 `;
 export const NewItemInput = styled.input`
   border-radius: 3px;
