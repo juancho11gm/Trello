@@ -13,8 +13,15 @@ const NewItemForm = (props: NewItemFormProps): ReactElement => {
 
   return (
     <NewItemFormContainer>
-      <NewItemInput ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} />
-      <NewItemButton onClick={() => onAdd(text)}>Create</NewItemButton>
+      <NewItemInput
+        placeholder='Add new element'
+        ref={inputRef}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <NewItemButton name='create' onClick={() => onAdd(text)}>
+        Create
+      </NewItemButton>
     </NewItemFormContainer>
   );
 };
