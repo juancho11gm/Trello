@@ -1,14 +1,14 @@
-import React from 'react';
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { AppStateProvider } from '../AppStateContext';
+import { TrelloStateProvider } from '@hooks/reducer';
 import { App } from './App';
 
-test('renders learn react link', () => {
+test('Renders the Trello Clone App', () => {
   render(
-    <AppStateProvider>
+    <TrelloStateProvider>
       <App />
-    </AppStateProvider>,
+    </TrelloStateProvider>,
   );
-  const linkElement = screen.getByText(/learn react/i);
+  const linkElement = screen.getByText(/Trello Clone/i);
   expect(linkElement).toBeInTheDocument();
 });

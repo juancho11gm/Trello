@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { AppStateProvider } from './Components/AppStateContext';
-import { App } from './Components/App';
+import { TrelloStateProvider } from '@hooks/reducer';
+import { App } from '@components/App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppStateProvider>
+    <TrelloStateProvider>
       <App />
-    </AppStateProvider>
+    </TrelloStateProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

@@ -35,8 +35,9 @@ export const ColumnContainer = styled.li`
 
 export const ColumnTitle = styled.div`
   font-weight: bold;
-  text-align: center;
-  margin: 8px 0;
+  text-align: left;
+  margin: 0.1rem 0;
+  padding: 10px;
 `;
 
 export const CardsContainer = styled.ul`
@@ -58,7 +59,7 @@ export const CardContainer = styled.li`
 export const AddItemButton = styled.button<AddItemButtonProps>`
   background-color: #ffffff3d;
   border-radius: 3px;
-  border: none;
+  border: 1px solid #ffffff3d;
   color: ${(props) => (props.dark ?? false ? '#000' : '#fff')};
   cursor: pointer;
   text-align: left;
@@ -70,6 +71,7 @@ export const AddItemButton = styled.button<AddItemButtonProps>`
   flex-shrink: 4;
   padding: 1rem;
 `;
+
 export const NewItemFormContainer = styled.form`
   max-width: 300px;
   display: flex;
@@ -88,6 +90,7 @@ export const NewItemButton = styled.button`
   text-align: center;
   cursor: pointer;
 `;
+
 export const NewItemInput = styled.input`
   border-radius: 3px;
   border: none;
@@ -96,6 +99,7 @@ export const NewItemInput = styled.input`
   padding: 0.5rem;
   width: 100%;
 `;
+
 interface AddItemButtonProps {
   dark?: boolean;
 }

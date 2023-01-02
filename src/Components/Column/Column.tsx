@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { AddNewItem } from '../AddNewItem';
-import { CardsContainer, ColumnContainer, ColumnTitle } from '../../Utils/Styles';
-import { useAppState } from '../AppStateContext';
-import { Card } from '../Card';
+import { CardsContainer, ColumnContainer, ColumnTitle } from '@styles/styles';
+import { AddNewItem } from '@components/AddNewItem';
+import { Card } from '@components/Card';
+import { useTrelloContext } from '@hooks/context';
 
 interface ColumnProps {
   text: string;
@@ -19,7 +19,7 @@ export const Column = ({
   innerRef,
   ...dragProps
 }: React.PropsWithChildren<ColumnProps>): ReactElement => {
-  const { state, dispatch } = useAppState();
+  const { state, dispatch } = useTrelloContext();
 
   return (
     <DragDropContext
@@ -37,8 +37,8 @@ export const Column = ({
         })
       }
     >
-      <ColumnContainer ref={innerRef} {...dragProps}>
-        <ColumnTitle>{text}</ColumnTitle>
+      <ColumnContainer ref={innerRef} {...dragProps} className='column'>
+        <ColumnTitle className='column-title'>{text}</ColumnTitle>
         <Droppable droppableId='cards'>
           {(droppableProvided) => (
             <CardsContainer {...droppableProvided.droppableProps} ref={droppableProvided.innerRef}>

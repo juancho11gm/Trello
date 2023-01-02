@@ -3,22 +3,21 @@
     "target": "es6",
     "module": "esnext",
     "moduleResolution": "node",
-    "noResolve": false,
-    "noImplicitAny": false,
-    "removeComments": true,
     "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
     "allowJs": true,
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["src", "e2e"]
+  "include": ["src", "e2e", "./vite.config.ts", "vitest.setup.ts"],
+  "extends": "./tsconfig.paths.json",
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

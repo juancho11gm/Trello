@@ -7,11 +7,13 @@
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
-    "project": ["tsconfig.json"],
+    "project": ["./tsconfig.json"],
     "sourceType": "module"
   },
   "plugins": ["react", "prettier"],
   "rules": {
-    "space-before-blocks": "error"
+    "space-before-blocks": "error",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }

@@ -11,47 +11,31 @@
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
     "styled-components": "^5.2.3",
     "uuid": "^8.3.2",
+    "vite-tsconfig-paths": "^4.0.3",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "format": "prettier --write ./src",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "vite",
+    "build": "vite build",
+    "test": "vitest --dir ./src",
     "e2e": "playwright test",
+    "test:all": "npm test && npm run e2e",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@playwright/test": "^1.29.1",
-    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "@types/react": "^17.0.52",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@vitejs/plugin-react": "^3.0.0",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
@@ -60,7 +44,10 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.31.10",
+    "jsdom": "^20.0.3",
     "prettier": "^2.7.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.9.4",
+    "vite": "^4.0.3",
+    "vitest": "^0.26.3"
   }
 }

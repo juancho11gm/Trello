@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { useAppState } from '../AppStateContext';
-import { AppContainer, AppTitle, ColumnsContainer } from '../../Utils/Styles';
-import { AddNewItem } from '../AddNewItem';
-import { Column } from '../Column';
+import { AppContainer, AppTitle, ColumnsContainer } from '@styles/styles';
+import { AddNewItem } from '@components/AddNewItem';
+import { Column } from '@components/Column';
+import { useTrelloContext } from '@hooks/context';
 
 const App = (): ReactElement => {
-  const { state, dispatch } = useAppState();
+  const { state, dispatch } = useTrelloContext();
   return (
     <>
       <DragDropContext
