@@ -8,6 +8,7 @@ Basic [Trello](https://trello.com) clone created with:
 - Styled Components 💅🏻.
 - React Beautiful Dnd 🪄.
 - RTL & Playright 🧪.
+- Vercel ▲.
 
 ## Available Scripts
 
