@@ -13,6 +13,11 @@ Basic [Trello](https://trello.com) clone created with:
 
 In the project directory, you can run:
 
+```
+$ nvm use
+$ npm i
+```
+
 ### `npm start`
 
 Runs the app in the development mode.\
