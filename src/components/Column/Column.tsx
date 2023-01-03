@@ -1,69 +1,64 @@
-import { ReactElement } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { CardsContainer, ColumnContainer, ColumnTitle } from '@styles/styles';
+import React, { ReactElement } from 'react';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { TaskList, ColumnContainer, ColumnTitle } from '@styles/styles';
+import { ACTION_TYPES, ColumnI, DROPPABLE_TYPES, TaskI } from '@interfaces/interfaces';
 import { AddNewItem } from '@components/AddNewItem';
-import { Card } from '@components/Card';
-import { useTrelloContext } from '@hooks/context';
+import { Task } from '@components/Task';
+
+const InnerList = React.memo(({ tasks }: { tasks: TaskI[] }) => {
+  return (
+    <>
+      {tasks?.map((task, i) => (
+        <Task key={task.id} id={task.id} text={task.text} index={i} />
+      ))}
+    </>
+  );
+});
+
+InnerList.displayName = 'InnerList';
 
 interface ColumnProps {
-  text: string;
+  column: ColumnI;
+  tasks: TaskI[];
+  isDropDisabled: boolean;
   index: number;
-  id: string;
-  innerRef: (element?: HTMLElement | null) => any;
 }
 
 export const Column = ({
-  text,
+  column,
+  tasks,
+  isDropDisabled,
   index,
-  id,
-  innerRef,
-  ...dragProps
 }: React.PropsWithChildren<ColumnProps>): ReactElement => {
-  const { state, dispatch } = useTrelloContext();
-
+  const { title, id } = column;
   return (
-    <DragDropContext
-      onDragEnd={(result) =>
-        dispatch({
-          type: 'MOVE_TASK',
-          payload: {
-            columnId: id,
-            source: { ...result.source },
-            destination: {
-              index: result.destination?.index,
-              droppableId: result.destination?.droppableId,
-            },
-          },
-        })
-      }
-    >
-      <ColumnContainer ref={innerRef} {...dragProps} className='column'>
-        <ColumnTitle className='column-title'>{text}</ColumnTitle>
-        <Droppable droppableId='cards'>
-          {(droppableProvided) => (
-            <CardsContainer {...droppableProvided.droppableProps} ref={droppableProvided.innerRef}>
-              {state.list[index].tasks.map((task, i) => (
-                <Draggable key={task.id} draggableId={task.id} index={i}>
-                  {(draggableProvided) => (
-                    <Card
-                      text={task.text}
-                      innerRef={draggableProvided.innerRef}
-                      {...draggableProvided.draggableProps}
-                      {...draggableProvided.dragHandleProps}
-                    />
-                  )}
-                </Draggable>
-              ))}
-              {droppableProvided.placeholder}
-            </CardsContainer>
-          )}
-        </Droppable>
-        <AddNewItem
-          toggleButtonText='+ Add another task'
-          onAdd={(text) => dispatch({ type: 'ADD_TASK', payload: { text, taskId: id } })}
-          dark
-        />
-      </ColumnContainer>
-    </DragDropContext>
+    <Draggable draggableId={id} index={index}>
+      {(provided) => (
+        <ColumnContainer {...provided.draggableProps} ref={provided.innerRef} className='column'>
+          <ColumnTitle {...provided.dragHandleProps} className='column-title'>
+            {title}
+          </ColumnTitle>
+          <Droppable droppableId={id} isDropDisabled={isDropDisabled} type={DROPPABLE_TYPES.TASK}>
+            {(provided, snapshot) => (
+              <TaskList
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                isDraggingOver={snapshot.isDraggingOver}
+              >
+                <InnerList tasks={tasks} /> {provided.placeholder}
+              </TaskList>
+            )}
+          </Droppable>
+          <AddNewItem
+            toggleButtonText='+ Add another task'
+            onAdd={
+              (text) => console.log('Add task')
+              // dispatch({ type: ACTION_TYPES.ADD_TASK, payload: { text, taskId: id } })
+            }
+            dark
+          />
+        </ColumnContainer>
+      )}
+    </Draggable>
   );
 };

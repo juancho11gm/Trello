@@ -10,12 +10,12 @@ export const AppContainer = styled.div`
   gap: 20px;
   flex-direction: row;
   height: 100%;
-  padding: 20px;
+  padding: 1rem;
   width: 100%;
   overflow: scroll;
 `;
 
-export const ColumnsContainer = styled.ul`
+export const ColumnList = styled.ul`
   display: flex;
   gap: 20px;
   flex-direction: row;
@@ -29,31 +29,47 @@ export const ColumnContainer = styled.li`
   background-color: #ebecf0;
   min-height: 40px;
   border-radius: 3px;
-  padding: 8px 8px;
   width: 100%;
+  padding: 1rem;
 `;
 
 export const ColumnTitle = styled.div`
   font-weight: bold;
   text-align: left;
-  margin: 0.1rem 0;
-  padding: 10px;
+  margin-bottom: 0.5rem;
 `;
 
-export const CardsContainer = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-`;
+interface TaskListProps {
+  isDraggingOver: boolean;
+}
 
-export const CardContainer = styled.li`
-  background-color: #fff;
-  cursor: pointer;
+export const TaskList = styled.ul<TaskListProps>`
+  display: flex;
+  border-radius: 3px;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: ${props => props.isDraggingOver ? 'skyblue' : '#ebecf0'};
   margin: 0;
   margin-bottom: 0.5rem;
-  padding: 10px;
+  padding: 0.5rem;
+  list-style-type: none;
+  min-height: 100px;
+  transition: background-color 0.5s;
+`;
+
+interface TaskContainerProps {
+  isDragging: boolean;
+  isDragDisabled: boolean;
+}
+
+export const TaskContainer = styled.li<TaskContainerProps>`
+  background-color: ${props => props.isDragDisabled ? 'lightgray' : props.isDragging ? 'lightgreen' : '#fff'};
+  cursor: pointer;
+  margin: 0;
+  padding: 0.5rem;
   border-radius: 3px;
   box-shadow: #091e4240 0px 1px 0px 0px;
+  transition: background-color 0.5s;
 `;
 
 export const AddItemButton = styled.button<AddItemButtonProps>`
@@ -65,11 +81,11 @@ export const AddItemButton = styled.button<AddItemButtonProps>`
   text-align: left;
   transition: background 85ms ease-in;
   width: 100%;
+  padding: 0.5rem;
   &:hover {
     background-color: #ffffff52;
   }
   flex-shrink: 4;
-  padding: 1rem;
 `;
 
 export const NewItemFormContainer = styled.form`
@@ -80,17 +96,6 @@ export const NewItemFormContainer = styled.form`
   align-items: flex-start;
 `;
 
-export const NewItemButton = styled.button`
-  background-color: #5aac44;
-  border-radius: 3px;
-  border: none;
-  box-shadow: none;
-  color: #fff;
-  padding: 6px 12px;
-  text-align: center;
-  cursor: pointer;
-`;
-
 export const NewItemInput = styled.input`
   border-radius: 3px;
   border: none;
@@ -98,6 +103,17 @@ export const NewItemInput = styled.input`
   margin-bottom: 0.5rem;
   padding: 0.5rem;
   width: 100%;
+`;
+
+export const NewItemSubmitButton = styled.button`
+  background-color: #5aac44;
+  border-radius: 3px;
+  border: none;
+  box-shadow: none;
+  color: #fff;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
 `;
 
 interface AddItemButtonProps {

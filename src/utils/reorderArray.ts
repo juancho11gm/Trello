@@ -1,3 +1,7 @@
+/**
+ * It takes an array, removes an item from it, and then inserts it back into the array at a different
+ * index.
+ */
 export function reorderArray<T>(list: T[], startIndex: number, endIndex: number | undefined): T[] {
   if (endIndex === undefined) return list;
   const result = [...list];

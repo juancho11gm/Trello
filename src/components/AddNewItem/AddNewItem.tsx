@@ -2,19 +2,20 @@ import { ReactElement, useState } from 'react';
 import { NewItemForm } from '@components/NewItemForm';
 import { AddItemButton } from '@styles/styles';
 
-interface AddNewItemProps {
+interface AddNewTaskProps {
   onAdd: (text: string) => void;
   toggleButtonText: string;
   dark?: boolean;
 }
 
-const AddNewItem = (props: AddNewItemProps): ReactElement => {
+const AddNewItem = (props: AddNewTaskProps): ReactElement => {
   const [showForm, setShowForm] = useState(false);
   const { onAdd, toggleButtonText, dark } = props;
 
   if (showForm) {
     return (
       <NewItemForm
+        setShowForm={setShowForm}
         onAdd={(text) => {
           onAdd(text);
           setShowForm(false);

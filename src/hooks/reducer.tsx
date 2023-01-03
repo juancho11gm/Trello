@@ -1,61 +1,108 @@
 import React, { ReactElement, useReducer } from 'react';
-import { v1 as uuid } from 'uuid';
-import { Action, TrelloState, List, Task } from '@interfaces/interfaces';
-import { findItemIndexById } from '@utils/findItemIndexById';
+import { Action, TrelloState, ACTION_TYPES, ColumnI } from '@interfaces/interfaces';
 import { reorderArray } from '@utils/reorderArray';
 import { TrelloContext } from '@hooks/context';
 import { initialState } from '@data/data';
 
 const trelloStateReducer = (state: TrelloState, action: Action): TrelloState => {
   switch (action.type) {
-    case 'ADD_LIST': {
+    case ACTION_TYPES.UPDATE_DRAG: {
       return {
         ...state,
-        list: [...state.list, { id: uuid(), text: action.payload, tasks: [] }],
+        homeIndex: action.payload,
       };
     }
 
-    case 'ADD_TASK': {
-      const targetLaneIndex = findItemIndexById(state.list, action.payload.taskId);
-      state.list[targetLaneIndex].tasks.push({
-        id: uuid(),
-        text: action.payload.text,
-      });
-      return {
-        ...state,
-      };
+    case ACTION_TYPES.ADD_LIST: {
+      // return {
+      //   ...state,
+      //   list: [...state.list, { id: uuid(), text: action.payload, tasks: [] }],
+      // };
+      return { ...state };
     }
 
-    case 'MOVE_LIST': {
+    case ACTION_TYPES.ADD_TASK: {
+      // const targetLaneIndex = findItemIndexById(state.list, action.payload.taskId);
+      // state.list[targetLaneIndex].tasks.push({
+      //   id: uuid(),
+      //   text: action.payload.text,
+      // });
+      // return {
+      //   ...state,
+      // };
+      return { ...state };
+    }
+
+    case ACTION_TYPES.MOVE_COLUMN: {
+      const { source, destination } = action.payload;
+      // Out of the columns context
+      if (destination == null) return { ...state };
+      // Same position
+      if (source.index === destination?.index && source.droppableId === destination.droppableId) {
+        return { ...state };
+      }
+      const newColumnOrder = Array.from(state.columnOrder);
+      const newColumns = reorderArray<string>(newColumnOrder, source.index, destination.index);
+      return { ...state, columnOrder: newColumns };
+    }
+
+    case ACTION_TYPES.MOVE_TASK: {
       const { source, destination } = action.payload;
 
-      if (destination === null) return { ...state };
-      if (source.index === destination.index && source.droppableId === destination.droppableId) {
+      // Out of the columns context
+      if (destination == null) return { ...state };
+      // Same position
+      if (source.index === destination?.index && source.droppableId === destination.droppableId) {
         return { ...state };
       }
 
-      const newList = reorderArray<List>(state.list, source.index, destination.index);
+      // Find Source Column
+      const sourceColumn = state.columns[source.droppableId];
+      const destinationColumn = state.columns[destination.droppableId];
 
-      return { ...state, list: newList };
-    }
+      // Reorder tasks in the same column
+      if (sourceColumn === destinationColumn) {
+        const newSourceTaskIds = Array.from(sourceColumn.taskIds);
+        const newTasks = reorderArray<string>(newSourceTaskIds, source.index, destination?.index);
 
-    case 'MOVE_TASK': {
-      const { columnId, source, destination } = action.payload;
+        const newColumn: ColumnI = {
+          ...sourceColumn,
+          taskIds: newTasks,
+        };
 
-      if (destination === null) return { ...state };
-      if (source.index === destination.index && source.droppableId === destination.droppableId) {
-        return { ...state };
+        return {
+          ...state,
+          columns: {
+            ...state.columns,
+            [newColumn.id]: newColumn,
+          },
+        };
+      } else {
+        // Move task from one column to another
+        const newSourceTaskIds = Array.from(sourceColumn.taskIds);
+        const [task] = newSourceTaskIds.splice(source.index, 1);
+        const newSourceColumn: ColumnI = {
+          ...sourceColumn,
+          taskIds: newSourceTaskIds,
+        };
+
+        const newDestinationTaskIds = [...destinationColumn.taskIds];
+        newDestinationTaskIds.splice(destination.index, 0, task);
+
+        const newDestinationColumn: ColumnI = {
+          ...destinationColumn,
+          taskIds: newDestinationTaskIds,
+        };
+
+        return {
+          ...state,
+          columns: {
+            ...state.columns,
+            [newSourceColumn.id]: newSourceColumn,
+            [newDestinationColumn.id]: newDestinationColumn,
+          },
+        };
       }
-
-      const columnIndex = state.list.findIndex((column) => column.id === columnId);
-      const column = { ...state.list[columnIndex] };
-
-      const tasks = [...column.tasks];
-      const newList = reorderArray<Task>(tasks, source.index, destination.index);
-
-      state.list[columnIndex].tasks = [...newList];
-
-      return { ...state };
     }
 
     default: {

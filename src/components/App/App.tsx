@@ -1,61 +1,102 @@
-import { ReactElement } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { AppContainer, AppTitle, ColumnsContainer } from '@styles/styles';
+import React, { ReactElement } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { AppContainer, AppTitle, ColumnList } from '@styles/styles';
 import { AddNewItem } from '@components/AddNewItem';
 import { Column } from '@components/Column';
 import { useTrelloContext } from '@hooks/context';
+import { ACTION_TYPES, ColumnI, DROPPABLE_TYPES, TaskI } from '@interfaces/interfaces';
+
+interface InnerlistProps {
+  column: ColumnI;
+  taskMap: { [key: string]: TaskI };
+  index: number;
+  homeIndex: number;
+}
+
+const InnerList = React.memo(({ column, taskMap, index, homeIndex }: InnerlistProps) => {
+  const tasks = column.taskIds.map((taskId) => taskMap[taskId]);
+  const isDropDisabled = index < homeIndex;
+  return (
+    <Column
+      key={column.id}
+      column={column}
+      tasks={tasks}
+      index={index}
+      isDropDisabled={isDropDisabled}
+    />
+  );
+});
+
+InnerList.displayName = 'InnerList';
 
 const App = (): ReactElement => {
   const { state, dispatch } = useTrelloContext();
   return (
     <>
-      <DragDropContext
-        onDragEnd={(result) =>
-          dispatch({
-            type: 'MOVE_LIST',
-            payload: {
-              source: { ...result.source },
-              destination: {
-                index: result.destination?.index,
-                droppableId: result.destination?.droppableId,
-              },
-            },
-          })
-        }
-      >
-        <AppTitle>Trello Clone</AppTitle>
-        <AppContainer>
-          <Droppable droppableId='columns' direction='horizontal'>
+      <AppTitle>Trello Clone</AppTitle>
+      <AppContainer>
+        <DragDropContext
+          onDragStart={(start) => {
+            const homeIndex = state.columnOrder.indexOf(start.source.droppableId);
+            dispatch({
+              type: ACTION_TYPES.UPDATE_DRAG,
+              payload: homeIndex,
+            });
+          }}
+          onDragEnd={(result) => {
+            const { destination, source, type } = result;
+
+            dispatch({
+              type: ACTION_TYPES.UPDATE_DRAG,
+              payload: -1,
+            });
+
+            if (type === DROPPABLE_TYPES.TASK) {
+              dispatch({
+                type: ACTION_TYPES.MOVE_TASK,
+                payload: {
+                  source,
+                  destination,
+                },
+              });
+            }
+
+            if (type === DROPPABLE_TYPES.COLUMN) {
+              dispatch({
+                type: ACTION_TYPES.MOVE_COLUMN,
+                payload: {
+                  source,
+                  destination,
+                },
+              });
+            }
+          }}
+        >
+          <Droppable droppableId='all-columns' direction='horizontal' type={DROPPABLE_TYPES.COLUMN}>
             {(droppableProvided) => (
-              <ColumnsContainer
-                {...droppableProvided.droppableProps}
-                ref={droppableProvided.innerRef}
-              >
-                {state.list.map((list, i) => (
-                  <Draggable key={list.id} draggableId={list.id} index={i}>
-                    {(draggableProvided) => (
-                      <Column
-                        key={list.id}
-                        index={i}
-                        id={list.id}
-                        text={list.text}
-                        innerRef={draggableProvided.innerRef}
-                        {...draggableProvided.draggableProps}
-                        {...draggableProvided.dragHandleProps}
-                      />
-                    )}
-                  </Draggable>
-                ))}
+              <ColumnList {...droppableProvided.droppableProps} ref={droppableProvided.innerRef}>
+                {state.columnOrder.map((columnId, index) => {
+                  const column = state.columns[columnId];
+                  return (
+                    <InnerList
+                      key={column.id}
+                      column={column}
+                      taskMap={state.tasks}
+                      homeIndex={state.homeIndex}
+                      index={index}
+                    />
+                  );
+                })}
                 {droppableProvided.placeholder}
-              </ColumnsContainer>
+              </ColumnList>
             )}
           </Droppable>
           <AddNewItem
-            toggleButtonText='+ Add another list'
-            onAdd={(text) => dispatch({ type: 'ADD_LIST', payload: text })}
+            toggleButtonText='+ Add another Column'
+            onAdd={(text) => dispatch({ type: ACTION_TYPES.ADD_LIST, payload: text })}
           />
-        </AppContainer>
-      </DragDropContext>
+        </DragDropContext>
+      </AppContainer>
     </>
   );
 };

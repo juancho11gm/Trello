@@ -1,48 +1,62 @@
+import { DraggableLocation } from 'react-beautiful-dnd';
+
+export enum ACTION_TYPES {
+  ADD_LIST = 'ADD_LIST',
+  MOVE_COLUMN = 'MOVE_COLUMN',
+  ADD_TASK = 'ADD_TASK',
+  MOVE_TASK = 'MOVE_TASK',
+  UPDATE_DRAG = 'UPDATE_DRAG'
+}
+
+export enum DROPPABLE_TYPES {
+  COLUMN = 'COLUMN',
+  TASK = 'TASK'
+}
+
 export type Action =
+  {
+    type: ACTION_TYPES.UPDATE_DRAG;
+    payload: number
+  }
   | {
-    type: 'ADD_LIST';
+    type: ACTION_TYPES.ADD_LIST;
     payload: string;
   }
   | {
-    type: 'ADD_TASK';
+    type: ACTION_TYPES.ADD_TASK;
     payload: { text: string; taskId: string };
   }
   | {
-    type: 'MOVE_LIST';
-    payload: { source: SourceDroppableData; destination: DestinationDroppableData };
+    type: ACTION_TYPES.MOVE_COLUMN;
+    payload: {
+      source: DraggableLocation;
+      destination: DraggableLocation | undefined;
+    };
   }
   | {
-    type: 'MOVE_TASK';
+    type: ACTION_TYPES.MOVE_TASK;
     payload: {
-      columnId: string;
-      source: SourceDroppableData;
-      destination: DestinationDroppableData;
+      source: DraggableLocation;
+      destination: DraggableLocation | undefined;
     };
   };
 
-export interface SourceDroppableData {
-  index: number;
-  droppableId: string;
-}
-
-export interface DestinationDroppableData {
-  index: number | undefined;
-  droppableId: string | undefined;
-}
-
-export interface Task {
+export interface TaskI {
   id: string;
   text: string;
 }
 
-export interface List {
+export interface ColumnI {
   id: string;
-  text: string;
-  tasks: Task[];
+  title: string;
+  taskIds: string[];
 }
 
 export interface TrelloState {
-  list: List[];
+  homeIndex: number;
+  tasks: { [key: string]: TaskI };
+  columns: { [key: string]: ColumnI };
+  columnOrder: string[]
 }
 
 export interface TrelloStateContextProps {
