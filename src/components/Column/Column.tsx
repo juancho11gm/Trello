@@ -55,7 +55,7 @@ export const Column = ({
             )}
           </Droppable>
           <AddNewItem
-            toggleButtonText='+ Add another task'
+            toggleButtonText='+ Add another Task'
             onAdd={(text) =>
               dispatch({ type: ACTION_TYPES.ADD_TASK, payload: { text, columnId: id } })
             }

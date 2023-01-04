@@ -24,6 +24,7 @@ export const Task = ({ id, text, index }: TaskProps): ReactElement => {
           isDragging={snapshot.isDragging}
           isDragDisabled={isDragDisabled}
           aria-roledescription='Press space bar to lift the task'
+          className='task'
         >
           {text}
           <RemoveButton

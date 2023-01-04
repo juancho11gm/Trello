@@ -4,7 +4,7 @@ export const initialState: TrelloState = {
   homeIndex: -1,
   tasks: {
     'task-1': { id: 'task-1', text: 'Learn Python (Blocked)' },
-    'task-2': { id: 'task-2', text: 'Learn Typescript' },
+    'task-2': { id: 'task-2', text: 'Learn TypeScript' },
     'task-3': { id: 'task-3', text: 'Learn NextJS' },
     'task-4': { id: 'task-4', text: 'Learn Playwright' },
     'task-5': { id: 'task-5', text: 'Learn React' },
