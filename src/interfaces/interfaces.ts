@@ -1,10 +1,12 @@
 import { DraggableLocation } from 'react-beautiful-dnd';
 
 export enum ACTION_TYPES {
-  ADD_LIST = 'ADD_LIST',
+  ADD_COLUMN = 'ADD_COLUMN',
   MOVE_COLUMN = 'MOVE_COLUMN',
+  REMOVE_COLUMN = 'REMOVE_COLUMN',
   ADD_TASK = 'ADD_TASK',
   MOVE_TASK = 'MOVE_TASK',
+  REMOVE_TASK = 'REMOVE_TASK',
   UPDATE_DRAG = 'UPDATE_DRAG'
 }
 
@@ -19,12 +21,12 @@ export type Action =
     payload: number
   }
   | {
-    type: ACTION_TYPES.ADD_LIST;
+    type: ACTION_TYPES.ADD_COLUMN;
     payload: string;
   }
   | {
     type: ACTION_TYPES.ADD_TASK;
-    payload: { text: string; taskId: string };
+    payload: { text: string; columnId: string };
   }
   | {
     type: ACTION_TYPES.MOVE_COLUMN;
@@ -39,6 +41,14 @@ export type Action =
       source: DraggableLocation;
       destination: DraggableLocation | undefined;
     };
+  }
+  | {
+    type: ACTION_TYPES.REMOVE_TASK;
+    payload: string;
+  }
+  | {
+    type: ACTION_TYPES.REMOVE_COLUMN;
+    payload: string;
   };
 
 export interface TaskI {

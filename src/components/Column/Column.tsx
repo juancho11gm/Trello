@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { TaskList, ColumnContainer, ColumnTitle } from '@styles/styles';
 import { ACTION_TYPES, ColumnI, DROPPABLE_TYPES, TaskI } from '@interfaces/interfaces';
+import { TaskList, ColumnContainer, ColumnTitle, RemoveButton } from '@styles/styles';
+import { useTrelloContext } from '@hooks/context';
 import { AddNewItem } from '@components/AddNewItem';
 import { Task } from '@components/Task';
 
@@ -24,12 +25,14 @@ interface ColumnProps {
   index: number;
 }
 
+// TODO: add Edit button
 export const Column = ({
   column,
   tasks,
   isDropDisabled,
   index,
 }: React.PropsWithChildren<ColumnProps>): ReactElement => {
+  const { dispatch } = useTrelloContext();
   const { title, id } = column;
   return (
     <Draggable draggableId={id} index={index}>
@@ -51,12 +54,23 @@ export const Column = ({
           </Droppable>
           <AddNewItem
             toggleButtonText='+ Add another task'
-            onAdd={
-              (text) => console.log('Add task')
-              // dispatch({ type: ACTION_TYPES.ADD_TASK, payload: { text, taskId: id } })
+            onAdd={(text) =>
+              dispatch({ type: ACTION_TYPES.ADD_TASK, payload: { text, columnId: id } })
             }
             dark
           />
+          <RemoveButton
+            alignment='top'
+            aria-label='remove column'
+            onClick={() =>
+              dispatch({
+                type: ACTION_TYPES.REMOVE_COLUMN,
+                payload: id,
+              })
+            }
+          >
+            ❌
+          </RemoveButton>
         </ColumnContainer>
       )}
     </Draggable>

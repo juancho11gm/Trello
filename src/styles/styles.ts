@@ -1,42 +1,47 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const AppTitle = styled.h1`
   text-align: center;
+  margin: 0;
+  padding: 2rem;
 `;
 
 export const AppContainer = styled.div`
-  background-color: #3179ba;
   display: flex;
   gap: 20px;
   flex-direction: row;
-  height: 100%;
+  height: 100vh;
   padding: 1rem;
   width: 100%;
   overflow: scroll;
+  align-items: flex-start;
 `;
 
 export const ColumnList = styled.ul`
   display: flex;
+  align-items: flex-start;
   gap: 20px;
-  flex-direction: row;
   list-style-type: none;
   padding: 0;
   margin: 0;
-  width: 100%;
 `;
 
 export const ColumnContainer = styled.li`
   background-color: #ebecf0;
   min-height: 40px;
+  min-width: 350px;
   border-radius: 3px;
   width: 100%;
+  max-width: 400px;
   padding: 1rem;
+  position: relative;
 `;
 
 export const ColumnTitle = styled.div`
   font-weight: bold;
   text-align: left;
   margin-bottom: 0.5rem;
+  padding: 0 0.5rem;
 `;
 
 interface TaskListProps {
@@ -50,7 +55,6 @@ export const TaskList = styled.ul<TaskListProps>`
   gap: 0.5rem;
   background-color: ${props => props.isDraggingOver ? 'skyblue' : '#ebecf0'};
   margin: 0;
-  margin-bottom: 0.5rem;
   padding: 0.5rem;
   list-style-type: none;
   min-height: 100px;
@@ -70,6 +74,32 @@ export const TaskContainer = styled.li<TaskContainerProps>`
   border-radius: 3px;
   box-shadow: #091e4240 0px 1px 0px 0px;
   transition: background-color 0.5s;
+  position: relative;
+`;
+
+const RemoveButtonSizes = {
+  top: css`
+    top: 8px;
+  `,
+  centered: css`
+    top: 50%;
+    transform: translateY(-50%);
+  `,
+};
+
+interface RemoveButtonProps {
+  alignment: 'top' | 'centered';
+}
+
+export const RemoveButton = styled.button<RemoveButtonProps>`
+  position: absolute;
+  background: none;
+  cursor: pointer;
+  border: none;
+  right: 8px;
+  font-size: 12px;
+  padding: 0;
+  ${(props) => RemoveButtonSizes[props.alignment]}
 `;
 
 export const AddItemButton = styled.button<AddItemButtonProps>`
@@ -80,20 +110,20 @@ export const AddItemButton = styled.button<AddItemButtonProps>`
   cursor: pointer;
   text-align: left;
   transition: background 85ms ease-in;
-  width: 100%;
   padding: 0.5rem;
+  margin-left: 0.5rem;
+  min-width: 100px;
   &:hover {
-    background-color: #ffffff52;
+    background-color: ${(props) => (props.dark ?? false ? 'lightgray' : '#ffffff52')};
   }
-  flex-shrink: 4;
 `;
 
 export const NewItemFormContainer = styled.form`
   max-width: 300px;
   display: flex;
   flex-direction: column;
-  width: 100%;
   align-items: flex-start;
+  margin-left: 0.5rem;
 `;
 
 export const NewItemInput = styled.input`
@@ -102,7 +132,6 @@ export const NewItemInput = styled.input`
   box-shadow: #091e4240 0px 1px 0px 0px;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
-  width: 100%;
 `;
 
 export const NewItemSubmitButton = styled.button`

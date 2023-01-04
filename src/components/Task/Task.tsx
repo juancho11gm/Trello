@@ -1,6 +1,8 @@
 import { ReactElement } from 'react';
-import { TaskContainer } from '@styles/styles';
+import { TaskContainer, RemoveButton } from '@styles/styles';
 import { Draggable } from 'react-beautiful-dnd';
+import { useTrelloContext } from '@hooks/context';
+import { ACTION_TYPES } from '@interfaces/interfaces';
 
 interface TaskProps {
   id: string;
@@ -8,8 +10,10 @@ interface TaskProps {
   index: number;
 }
 
+// TODO: add Edit button
 export const Task = ({ id, text, index }: TaskProps): ReactElement => {
   const isDragDisabled = text.includes('Blocked');
+  const { dispatch } = useTrelloContext();
   return (
     <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
       {(provided, snapshot) => (
@@ -22,6 +26,18 @@ export const Task = ({ id, text, index }: TaskProps): ReactElement => {
           aria-roledescription='Press space bar to lift the task'
         >
           {text}
+          <RemoveButton
+            alignment='centered'
+            aria-label='remove task'
+            onClick={() =>
+              dispatch({
+                type: ACTION_TYPES.REMOVE_TASK,
+                payload: id,
+              })
+            }
+          >
+            🗑
+          </RemoveButton>
         </TaskContainer>
       )}
     </Draggable>

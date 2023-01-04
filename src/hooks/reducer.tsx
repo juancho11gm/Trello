@@ -1,5 +1,6 @@
 import React, { ReactElement, useReducer } from 'react';
-import { Action, TrelloState, ACTION_TYPES, ColumnI } from '@interfaces/interfaces';
+import { v1 as uuid } from 'uuid';
+import { Action, TrelloState, ACTION_TYPES, ColumnI, TaskI } from '@interfaces/interfaces';
 import { reorderArray } from '@utils/reorderArray';
 import { TrelloContext } from '@hooks/context';
 import { initialState } from '@data/data';
@@ -13,24 +14,55 @@ const trelloStateReducer = (state: TrelloState, action: Action): TrelloState => 
       };
     }
 
-    case ACTION_TYPES.ADD_LIST: {
-      // return {
-      //   ...state,
-      //   list: [...state.list, { id: uuid(), text: action.payload, tasks: [] }],
-      // };
-      return { ...state };
+    case ACTION_TYPES.ADD_COLUMN: {
+      const newColumn: ColumnI = {
+        id: uuid(),
+        title: action.payload,
+        taskIds: [],
+      };
+
+      const newColumnOrder = Array.from(state.columnOrder);
+      newColumnOrder.push(newColumn.id);
+
+      return {
+        ...state,
+        columns: {
+          ...state.columns,
+          [newColumn.id]: newColumn,
+        },
+        columnOrder: newColumnOrder,
+      };
     }
 
     case ACTION_TYPES.ADD_TASK: {
-      // const targetLaneIndex = findItemIndexById(state.list, action.payload.taskId);
-      // state.list[targetLaneIndex].tasks.push({
-      //   id: uuid(),
-      //   text: action.payload.text,
-      // });
-      // return {
-      //   ...state,
-      // };
-      return { ...state };
+      const { text, columnId } = action.payload;
+
+      const newTaskId = uuid();
+      const newTask: TaskI = {
+        id: newTaskId,
+        text,
+      };
+
+      const column = state.columns[columnId];
+      const newTaskIds = Array.from(column.taskIds);
+      newTaskIds.push(newTaskId);
+
+      const newColumn = {
+        ...column,
+        taskIds: newTaskIds,
+      };
+
+      return {
+        ...state,
+        tasks: {
+          ...state.tasks,
+          [newTaskId]: newTask,
+        },
+        columns: {
+          ...state.columns,
+          [column.id]: newColumn,
+        },
+      };
     }
 
     case ACTION_TYPES.MOVE_COLUMN: {
@@ -103,6 +135,55 @@ const trelloStateReducer = (state: TrelloState, action: Action): TrelloState => 
           },
         };
       }
+    }
+
+    case ACTION_TYPES.REMOVE_TASK: {
+      const id = action.payload;
+
+      const newTasks = Object.assign({}, state.tasks);
+      const newColumns = Object.assign({}, state.columns);
+
+      let newColumn: ColumnI = {
+        id: '',
+        title: '',
+        taskIds: [],
+      };
+
+      // remove task within the column
+      for (const [, value] of Object.entries(newColumns)) {
+        const index = value.taskIds.indexOf(id);
+        if (index >= 0) {
+          const newColumnTasks = Array.from(value.taskIds);
+          newColumnTasks.splice(index, 1);
+          newColumn = {
+            ...value,
+            taskIds: newColumnTasks,
+          };
+        }
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete newTasks[id];
+
+      return {
+        ...state,
+        tasks: newTasks,
+        columns: {
+          ...state.columns,
+          [newColumn.id]: newColumn,
+        },
+      };
+    }
+
+    case ACTION_TYPES.REMOVE_COLUMN: {
+      const id = action.payload;
+      const newColumnOrder = state.columnOrder.filter((c) => c !== id);
+
+      // TODO: remove column from columns.
+      return {
+        ...state,
+        columnOrder: newColumnOrder,
+      };
     }
 
     default: {

@@ -3,12 +3,15 @@
 Basic [Trello](https://trello.com) clone created with:
 
 - Vite & Vitest 🛡.
-- React & TypeScript 🕹.
+- React (Context and useReducer) ⚛.
+- TypeScript 🕹.
 - Eslint & Prettier 🧹.
 - Styled Components 💅🏻.
 - React Beautiful Dnd 🪄.
 - RTL & Playright 🧪.
 - Vercel ▲.
+
+You can create Columns and Tasks within columns. You can only drag and drop the tasks to the columns ahead it.
 
 ## Available Scripts
 

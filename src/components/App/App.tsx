@@ -34,6 +34,7 @@ const App = (): ReactElement => {
   return (
     <>
       <AppTitle>Trello Clone</AppTitle>
+
       <AppContainer>
         <DragDropContext
           onDragStart={(start) => {
@@ -93,7 +94,7 @@ const App = (): ReactElement => {
           </Droppable>
           <AddNewItem
             toggleButtonText='+ Add another Column'
-            onAdd={(text) => dispatch({ type: ACTION_TYPES.ADD_LIST, payload: text })}
+            onAdd={(text) => dispatch({ type: ACTION_TYPES.ADD_COLUMN, payload: text })}
           />
         </DragDropContext>
       </AppContainer>
