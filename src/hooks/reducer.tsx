@@ -4,6 +4,7 @@ import { Action, TrelloState, ACTION_TYPES, ColumnI, TaskI } from '@interfaces/i
 import { reorderArray } from '@utils/reorderArray';
 import { TrelloContext } from '@hooks/context';
 import { initialState } from '@data/data';
+import { useLocalStorage } from './useLocalStorage';
 
 const trelloStateReducer = (state: TrelloState, action: Action): TrelloState => {
   switch (action.type) {
@@ -193,6 +194,19 @@ const trelloStateReducer = (state: TrelloState, action: Action): TrelloState => 
 };
 
 export const TrelloStateProvider = ({ children }: React.PropsWithChildren<{}>): ReactElement => {
-  const [state, dispatch] = useReducer(trelloStateReducer, initialState);
+  const [trelloStorage, setTrelloStorage] = useLocalStorage<TrelloState>({
+    key: 'TrelloState',
+    initialState,
+  });
+
+  const [state, dispatch] = useReducer(
+    (state: TrelloState, action: Action) => {
+      const newState = trelloStateReducer(state, action);
+      setTrelloStorage(newState);
+      return newState;
+    },
+    { ...trelloStorage },
+  );
+
   return <TrelloContext.Provider value={{ state, dispatch }}>{children}</TrelloContext.Provider>;
 };

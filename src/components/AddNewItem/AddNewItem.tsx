@@ -15,7 +15,6 @@ const AddNewItem = (props: AddNewTaskProps): ReactElement => {
   if (showForm) {
     return (
       <NewItemForm
-        setShowForm={setShowForm}
         onAdd={(text) => {
           onAdd(text);
           setShowForm(false);
