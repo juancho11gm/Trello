@@ -11,7 +11,10 @@ Basic [Trello](https://trello.com) clone created with:
 - RTL & Playright 🧪.
 - Vercel ▲.
 
-You can create Columns and Tasks within columns. You can only drag and drop the tasks to the columns ahead it.
+✅ You can create Columns, and Tasks within Columns.
+✅ You can only drag and drop the Tasks to the Columns ahead it.
+✅ You can remove Columns and Tasks.
+✅ The state persists in the Local Storage.
 
 ## Available Scripts
 
