@@ -23,7 +23,7 @@ body,
 }
 
 #root {
-  background-image: url(background.jpeg);
+  background-image: url('/background.jpeg');
   background-position: 50%;
   background-size: cover;
 }
