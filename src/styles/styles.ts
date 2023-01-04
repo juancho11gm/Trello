@@ -35,7 +35,16 @@ export const ColumnContainer = styled.li`
   max-width: 400px;
   padding: 1rem;
   position: relative;
+  @media (max-width: 480px) {
+    min-width: 200px;
+  }
 `;
+
+export const GrabbingDots = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
 export const ColumnTitle = styled.div`
   font-weight: bold;
@@ -78,8 +87,8 @@ export const TaskContainer = styled.li<TaskContainerProps>`
 `;
 
 const RemoveButtonSizes = {
-  top: css`
-    top: 8px;
+  bottom: css`
+    bottom: 8px;
   `,
   centered: css`
     top: 50%;
@@ -88,7 +97,7 @@ const RemoveButtonSizes = {
 };
 
 interface RemoveButtonProps {
-  alignment: 'top' | 'centered';
+  alignment: 'bottom' | 'centered';
 }
 
 export const RemoveButton = styled.button<RemoveButtonProps>`

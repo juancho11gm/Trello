@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { ACTION_TYPES, ColumnI, DROPPABLE_TYPES, TaskI } from '@interfaces/interfaces';
-import { TaskList, ColumnContainer, ColumnTitle, RemoveButton } from '@styles/styles';
+import { TaskList, ColumnContainer, ColumnTitle, RemoveButton, GrabbingDots } from '@styles/styles';
 import { useTrelloContext } from '@hooks/context';
 import { AddNewItem } from '@components/AddNewItem';
 import { Task } from '@components/Task';
+import { Drag } from '@icons/Drag/Drag';
 
 const InnerList = React.memo(({ tasks }: { tasks: TaskI[] }) => {
   return (
@@ -38,9 +39,10 @@ export const Column = ({
     <Draggable draggableId={id} index={index}>
       {(provided) => (
         <ColumnContainer {...provided.draggableProps} ref={provided.innerRef} className='column'>
-          <ColumnTitle {...provided.dragHandleProps} className='column-title'>
-            {title}
-          </ColumnTitle>
+          <GrabbingDots {...provided.dragHandleProps}>
+            <ColumnTitle className='column-title'>{title}</ColumnTitle>
+            <Drag />
+          </GrabbingDots>
           <Droppable droppableId={id} isDropDisabled={isDropDisabled} type={DROPPABLE_TYPES.TASK}>
             {(provided, snapshot) => (
               <TaskList
@@ -60,7 +62,7 @@ export const Column = ({
             dark
           />
           <RemoveButton
-            alignment='top'
+            alignment='bottom'
             aria-label='remove column'
             onClick={() =>
               dispatch({
