@@ -8,9 +8,10 @@
     "format": "prettier --write ./src",
     "start": "vite",
     "build": "vite build",
-    "test:unit": "vitest run --dir ./src",
-    "test:e2e": "playwright test",
-    "test": "npm run test:unit && npm run test:e2e",
+    "test-unit": "vitest",
+    "test-unit-all": "vitest run --dir ./src",
+    "test-e2e": "playwright test",
+    "test": "npm run test-unit-all && npm run test-e2e",
     "test:all": "npm test && npm run e2e",
     "eject": "react-scripts eject"
   },

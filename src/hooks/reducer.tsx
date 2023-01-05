@@ -3,10 +3,10 @@ import { v1 as uuid } from 'uuid';
 import { Action, TrelloState, ACTION_TYPES, ColumnI, TaskI } from '@interfaces/interfaces';
 import { reorderArray } from '@utils/reorderArray';
 import { TrelloContext } from '@hooks/context';
+import { useLocalStorage } from '@hooks/useLocalStorage';
 import { initialState } from '@data/data';
-import { useLocalStorage } from './useLocalStorage';
 
-const trelloStateReducer = (state: TrelloState, action: Action): TrelloState => {
+export const trelloStateReducer = (state: TrelloState, action: Action): TrelloState => {
   switch (action.type) {
     case ACTION_TYPES.UPDATE_DRAG: {
       return {

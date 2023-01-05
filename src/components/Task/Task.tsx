@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
-import { TaskContainer, RemoveButton } from '@styles/styles';
 import { Draggable } from 'react-beautiful-dnd';
-import { useTrelloContext } from '@hooks/context';
+import { TaskContainer, RemoveButton } from '@styles/styles';
 import { ACTION_TYPES } from '@interfaces/interfaces';
+import { useTrelloContext } from '@hooks/context';
 
 interface TaskProps {
   id: string;
